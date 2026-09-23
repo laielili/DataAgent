@@ -6,6 +6,8 @@ class AnswerValidator:
 
     def validate(self, answer: str, context: list[str]) -> bool:
         citations = self.citation_pattern.findall(answer)
+        if not citations:
+            return False
         # all citation numbers must be within range of context
         for num in citations:
             if not num.isdigit():

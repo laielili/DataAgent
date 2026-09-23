@@ -5,8 +5,8 @@ def test_pipeline_end_to_end():
     # use lightweight dummy components for fast unit test
     agent = QAAgent(
         intent_classifier=lambda q: "FAQ",
-        retriever=lambda q, k: ["机器学习是人工智能的一个分支。"],
-        reranker=lambda q, c, k: [(c[0], 1.0)],
+        retriever=lambda q, top_k: ["机器学习是人工智能的一个分支。"],
+        reranker=lambda q, c, top_k: [(c[0], 1.0)],
         generator=lambda q, c: "机器学习是人工智能的一个分支。[1]",
         validator=lambda a, c: True
     )
@@ -19,8 +19,8 @@ def test_pipeline_end_to_end():
 def test_pipeline_out_of_scope():
     agent = QAAgent(
         intent_classifier=lambda q: "OUT_OF_SCOPE",
-        retriever=lambda q, k: [],
-        reranker=lambda q, c, k: [],
+        retriever=lambda q, top_k: [],
+        reranker=lambda q, c, top_k: [],
         generator=lambda q, c: "",
         validator=lambda a, c: True
     )

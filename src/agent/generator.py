@@ -2,7 +2,7 @@ from jinja2 import Template
 import os
 
 class QAGenerator:
-    def __init__(self, llm, template_path: str = "prompts/qa_template.j2"):
+    def __init__(self, llm, template_path: str = "../../prompts/qa_template.j2"):
         self.llm = llm
         # Ensure template path is absolute or relative to current file
         if not os.path.isabs(template_path):

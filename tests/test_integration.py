@@ -24,19 +24,20 @@ def test_integration_qa():
             "自然语言处理让计算机理解和生成人类语言。",
         ]
     bm25 = BM25Retriever(kb)
-    vec = VectorRetriever(kb)
-    hybrid = HybridRetriever([bm25, vec], weights=[0.4, 0.6])
+    vec = VectorRetriever()  # use default model name
+    vec.add_documents(kb)
+    hybrid = HybridRetriever(bm25_retriever=bm25, vector_retriever=vec, weight_bm25=0.4, weight_vector=0.6)
     reranker = Reranker()
     class EchoLLM:
         def generate(self, prompt: str) -> str:
             # extract first sentence after "资料：" that looks like a context line
             import re
-            m = re.search(r"资料：\n(.*)", prompt, re.S)
+            m = re.search(r"资料：\\n(.*)", prompt, re.S)
             if m:
-                first_line = m.group(1).split("\n")[0].strip()
+                first_line = m.group(1).split("\\n")[0].strip()
                 return f"根据提供的资料，{first_line}[1]"
             return "未知。"
-    generator = QAGenerator(llm=EchoLLM(), template_path="prompts/qa_template.j2")
+    generator = QAGenerator(llm=EchoLLM())  # use default template path
     validator = AnswerValidator()
     agent = QAAgent(
         intent_classifier=classify_intent,

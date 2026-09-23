@@ -19,7 +19,7 @@ def test_generator_returns_answer():
 def test_generator_uses_template():
     # Ensure the generator loads the template and renders correctly
     dummy_llm = DummyLLM("dummy")
-    gen = QAGenerator(llm=dummy_llm, template_path="prompts/qa_template.j2")
+    gen = QAGenerator(llm=dummy_llm)  # use default template path
     context = ["测试内容"]
     answer = gen.generate("测试问题", context)
     assert answer == "dummy"
